@@ -133,12 +133,12 @@ public object MiPushHelper {
      *
      * @param context instance of [Context]
      * @param appId App-Id from the Mi Dashboard.
-     * @param appKey App-Key from the Mi Dashboard
-     * @param region The region in which the data should reside
+     * @param appKey App-Key from the Mi Dashboard.
+     * @param region The region in which the Mi data should reside. Set the region using [Region].
      *
      * @since 1.0.0
      */
-    fun initialiseMiPush(context: Context, appKey: String, appId: String, region: Region) {
+    public fun initialiseMiPush(context: Context, appKey: String, appId: String, region: Region) {
         if (MANUFACTURER_XIAOMI != MoEUtils.deviceManufacturer()) {
             Logger.print(LogLevel.WARN) { "$tag initialiseMiPush() : Not a Xiaomi device, rejecting Mi token." }
             return
@@ -147,8 +147,24 @@ public object MiPushHelper {
             Logger.print { "$tag initialiseMiPush() : Device Does not have Mi Ui will not register for mi push" }
             return
         }
-        MoEMiPushHelper.getInstance().setDataRegion(context, region.toString().lowercase())
+        setDataRegion(context, region)
         initialise(context, appId, appKey, region)
+    }
+
+    /**
+     * Set the region in which the Mi data reside.
+     *
+     * @param context: instance of [Context]
+     * @param region: The region in which the Mi data reside. Set the region using [Region].
+     *
+     * @since 1.0.0
+     */
+    public fun setDataRegion(context: Context, region: Region) {
+        try {
+            MoEMiPushHelper.getInstance().setDataRegion(context, region.toString().lowercase())
+        } catch (e: Throwable) {
+            Logger.print(LogLevel.ERROR, e) { "$tag setDataRegion() : " }
+        }
     }
 
     private fun isMainProcess(context: Context): Boolean {
