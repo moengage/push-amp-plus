@@ -104,6 +104,9 @@ public object MiPushHelper {
                 Logger.print { "$tag passPushToken() : Token is null or empty." }
                 return
             }
+            val region = MiPushClient.getAppRegion(context)
+            Logger.print { "$tag passPushToken() : App Region $region" }
+            setDataRegion(context, region)
             MoEMiPushHelper.getInstance().passPushToken(context, pushToken)
         } catch (e: Throwable) {
             Logger.print(LogLevel.ERROR, e) { "$tag passPushToken() : " }
@@ -147,7 +150,6 @@ public object MiPushHelper {
             Logger.print { "$tag initialiseMiPush() : Device Does not have Mi Ui will not register for mi push" }
             return
         }
-        setDataRegion(context, region)
         initialise(context, appId, appKey, region)
     }
 
@@ -157,11 +159,11 @@ public object MiPushHelper {
      * @param context: instance of [Context]
      * @param region: The region in which the Mi data reside. Set the region using [Region].
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
-    public fun setDataRegion(context: Context, region: Region) {
+    public fun setDataRegion(context: Context, region: String) {
         try {
-            MoEMiPushHelper.getInstance().setDataRegion(context, region.toString().lowercase())
+            MoEMiPushHelper.getInstance().setDataRegion(context, region.lowercase())
         } catch (e: Throwable) {
             Logger.print(LogLevel.ERROR, e) { "$tag setDataRegion() : " }
         }
