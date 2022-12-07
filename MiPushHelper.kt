@@ -200,4 +200,23 @@ public object MiPushHelper {
             Logger.print(LogLevel.ERROR, e) { "$tag initialiseMiPush() : " }
         }
     }
+
+    /**
+     * Logs notification click for notifications received via Mi.
+     *
+     * @param context instance of [Context]
+     * @param message instance of [MiPushMessage] received in the callback.
+     * @since 1.0.2
+     */
+    public fun logNotificationClick(context: Context, message: MiPushMessage) {
+        try {
+            Logger.print { "$tag logNotificationClick() : " }
+            val messageContent = message.content
+            if (messageContent.isNullOrBlank()) return
+            val pushPayload = jsonToBundle(JSONObject(messageContent)) ?: return
+            MoEMiPushHelper.getInstance().logNotificationClicked(context, pushPayload)
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag logNotificationClick() : " }
+        }
+    }
 }
