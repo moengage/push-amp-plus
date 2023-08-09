@@ -52,8 +52,15 @@ public object MiPushHelper {
         try {
             Logger.print { "$tag onNotificationClicked() : Notification clicked: $message" }
             val messageContent = message.content
-            if (messageContent.isNullOrBlank()) return
-            val pushPayload = jsonToBundle(JSONObject(messageContent)) ?: return
+            if (messageContent.isNullOrBlank()) {
+                Logger.print { "$tag onNotificationClicked() : message content is empty" }
+                return
+            }
+            val pushPayload = jsonToBundle(JSONObject(messageContent))
+            if (pushPayload.isEmpty) {
+                Logger.print { "$tag onNotificationClicked() : not a valid payload" }
+                return
+            }
             MoEMiPushHelper.getInstance().onNotificationClicked(context, pushPayload)
         } catch (e: Throwable) {
             Logger.print(LogLevel.ERROR, e) { "$tag onNotificationClicked() : " }
@@ -163,6 +170,7 @@ public object MiPushHelper {
      */
     public fun setDataRegion(context: Context, region: String) {
         try {
+            Logger.print { "$tag setDataRegion() : region: $region" }
             MoEMiPushHelper.getInstance().setDataRegion(context, region.lowercase())
         } catch (e: Throwable) {
             Logger.print(LogLevel.ERROR, e) { "$tag setDataRegion() : " }
