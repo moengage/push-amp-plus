@@ -1,3 +1,6 @@
+## 1.0.3 (08-07-2023)
+- Additional logs for debugging
+
 ## 1.0.2 (07-12-2022)
 - API to only track notification click for notifications received via Mi.
 

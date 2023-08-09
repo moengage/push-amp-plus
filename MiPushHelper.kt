@@ -62,8 +62,8 @@ public object MiPushHelper {
                 return
             }
             MoEMiPushHelper.getInstance().onNotificationClicked(context, pushPayload)
-        } catch (e: Throwable) {
-            Logger.print(LogLevel.ERROR, e) { "$tag onNotificationClicked() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag onNotificationClicked() : " }
         }
     }
 
@@ -78,11 +78,14 @@ public object MiPushHelper {
         try {
             Logger.print { "$tag passPushPayload() : $message" }
             val messageContent = message.content
-            if (messageContent.isNullOrBlank()) return
+            if (messageContent.isNullOrBlank()) {
+                Logger.print { "$tag passPushPayload() : message content is empty" }
+                return
+            }
             val pushPayload = jsonToBundle(JSONObject(messageContent))
             MoEMiPushHelper.getInstance().passPushPayload(context, pushPayload)
-        } catch (e: Exception) {
-            Logger.print(LogLevel.ERROR, e) { "$tag passPushPayload() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag passPushPayload() : " }
         }
     }
 
@@ -115,8 +118,8 @@ public object MiPushHelper {
             Logger.print { "$tag passPushToken() : App Region $region" }
             setDataRegion(context, region)
             MoEMiPushHelper.getInstance().passPushToken(context, pushToken)
-        } catch (e: Throwable) {
-            Logger.print(LogLevel.ERROR, e) { "$tag passPushToken() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag passPushToken() : " }
         }
     }
 
@@ -132,8 +135,8 @@ public object MiPushHelper {
             if (messageContent.isNullOrBlank()) return false
             val payload = jsonToBundle(JSONObject(messageContent))
             return MoEPushHelper.getInstance().isFromMoEngagePlatform(payload)
-        } catch (e: Throwable) {
-            Logger.print(LogLevel.ERROR, e) { "$tag isFromMoEngagePlatform() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag isFromMoEngagePlatform() : " }
         }
         return false
     }
@@ -164,16 +167,15 @@ public object MiPushHelper {
      * Set the region in which the Mi data reside.
      *
      * @param context: instance of [Context]
-     * @param region: The region in which the Mi data reside. Set the region using [Region].
+     * @param region: The region in which the Mi data reside. Set the region using [String].
      *
-     * @since 1.0.1
+     * @since 1.0.0
      */
     public fun setDataRegion(context: Context, region: String) {
         try {
-            Logger.print { "$tag setDataRegion() : region: $region" }
             MoEMiPushHelper.getInstance().setDataRegion(context, region.lowercase())
-        } catch (e: Throwable) {
-            Logger.print(LogLevel.ERROR, e) { "$tag setDataRegion() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag setDataRegion() : " }
         }
     }
 
@@ -204,8 +206,8 @@ public object MiPushHelper {
                 MiPushClient.setRegion(region)
                 MiPushClient.registerPush(context.applicationContext, appId, appKey)
             }
-        } catch (e: Throwable) {
-            Logger.print(LogLevel.ERROR, e) { "$tag initialiseMiPush() : " }
+        } catch (t: Throwable) {
+            Logger.print(LogLevel.ERROR, t) { "$tag initialiseMiPush() : " }
         }
     }
 
@@ -220,7 +222,10 @@ public object MiPushHelper {
         try {
             Logger.print { "$tag logNotificationClick() : " }
             val messageContent = message.content
-            if (messageContent.isNullOrBlank()) return
+            if (messageContent.isNullOrBlank()) {
+                Logger.print { "$tag logNotificationClick() : message content is empty" }
+                return
+            }
             val pushPayload = jsonToBundle(JSONObject(messageContent)) ?: return
             MoEMiPushHelper.getInstance().logNotificationClicked(context, pushPayload)
         } catch (t: Throwable) {
