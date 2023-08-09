@@ -31,7 +31,10 @@ public class MiPushReceiver : PushMessageReceiver() {
 
     override fun onReceivePassThroughMessage(context: Context?, message: MiPushMessage?) {
         Logger.print { "$tag onReceivePassThroughMessage() : $message" }
-        if (message == null || context == null) return
+        if (message == null || context == null) {
+            Logger.print { "$tag onReceivePassThroughMessage() : message or context is null" }
+            return
+        }
         if (MiPushHelper.isFromMoEngagePlatform(message)) {
             MiPushHelper.passPushPayload(context, message)
         }
@@ -39,19 +42,28 @@ public class MiPushReceiver : PushMessageReceiver() {
 
     override fun onNotificationMessageClicked(context: Context?, message: MiPushMessage?) {
         Logger.print { "$tag onNotificationMessageClicked() : $message" }
-        if (message == null || context == null) return
+        if (message == null || context == null) {
+            Logger.print { "$tag onNotificationMessageClicked() : message or context is null" }
+            return
+        }
         MiPushHelper.onNotificationClicked(context, message)
     }
 
     override fun onReceiveRegisterResult(context: Context?, message: MiPushCommandMessage?) {
         Logger.print { "$tag onReceiveRegisterResult() : $message" }
-        if (message == null || context == null) return
+        if (message == null || context == null) {
+            Logger.print { "$tag onReceiveRegisterResult() : message or context is null" }
+            return
+        }
         MiPushHelper.passPushToken(context, message)
     }
 
     override fun onCommandResult(context: Context?, message: MiPushCommandMessage?) {
         Logger.print { "$tag onCommandResult() : $message" }
-        if (message == null || context == null) return
+        if (message == null || context == null) {
+            Logger.print { "$tag onCommandResult() : message or context is null" }
+            return
+        }
         MiPushHelper.passPushToken(context, message)
     }
 }
