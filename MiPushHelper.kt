@@ -167,9 +167,9 @@ public object MiPushHelper {
      * Set the region in which the Mi data reside.
      *
      * @param context: instance of [Context]
-     * @param region: The region in which the Mi data reside. Set the region using [String].
+     * @param region: The region in which the Mi data reside. Set the region using [Region].
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public fun setDataRegion(context: Context, region: String) {
         try {
